@@ -1,0 +1,31 @@
+{
+  "name": "ajax-1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prepare": "husky install",
+    "prettier": "prettier -w .",
+    "prettier:check": "prettier -c ."
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.2.1",
+    "bootstrap": "^5.2.2",
+    "normalize.css": "^8.0.1",
+    "vite": "^4.0.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cfaring/ajax.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cfaring/ajax/issues"
+  },
+  "homepage": "https://github.com/cfaring/ajax#readme"
+}
