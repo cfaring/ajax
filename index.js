@@ -193,6 +193,8 @@ class ModalService{
         this.addModal.classList.toggle('visually-hidden');
     }
     close(){
+        let myInput = document.querySelector('.form-control') 
+        myInput.value = "";
         this.addModal.classList.toggle('visually-hidden');
     }
     closeEdit(){

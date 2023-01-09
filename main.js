@@ -1,11 +1,14 @@
 import {create,edit, getName, remove} from './ApiService.js'
 
+let LastSelectedId = 0;
+
 class PostService{
     constructor(){
         this.postsList = window.document.querySelector('.card-deck');
         this.removePost = this.removePost.bind(this);
         this.openEdit = this.openEdit.bind(this);
         this.onEdit = this.onEdit.bind(this);
+        this.lastId = this.lastId.bind(this);
         // this.editModal = document.querySelector('#editModal');
         
     }
@@ -17,7 +20,7 @@ class PostService{
         const post = document.createElement('div');
         post.innerHTML = `
         <div class="card">
-            <div class="post d-inline-flex align-items-center">
+            <div class="post d-inline-flex align-items-center" id = ${id}>
               <div class="image "><img src="vsources/avatar.png" width="100" height="100" alt="Card image cap"></div>
               <div class="card-name align-content-center justify-content-center mr-auto p-2" id="username" ><p class="text-center">${name}</p></div>
               <button type="button" class="btn btn-light"><span class="material-symbols-outlined">
@@ -39,42 +42,64 @@ class PostService{
           </div>
         </div>`;
         // post.id = id;
+
+
         post.querySelector(".post").id = id;
-        // console.log(post);
         const buttonEdit = post.querySelector('#edit-button');
         const buttonDelete = post.querySelector('#delete-button');
-        buttonEdit.addEventListener('click', this.openEdit);
-        buttonDelete.addEventListener('click', this.removePost);
+        //buttonEdit.addEventListener('click', this.openEdit);
+        post.querySelector("#edit-button").addEventListener('click', () =>{this.openEdit(post.querySelector(".post").id)});
+        //  buttonDelete.addEventListener('click', this.removePost);
+        post.querySelector("#delete-button").addEventListener('click', () =>{this.removePost(post.querySelector(".post").id)});
         return post;
     }
 
-    removePost(event){
-        const post = event.target.parentElement.parentElement;
-        console.log(post, 'card');
-        const dataPost = event.target.parentElement.parentElement.parentElement;
-        remove(post.id).then((res) => {
+    lastId(event){
+            LastSelectedId = event.target.id;
+            console.log(LastSelectedId, 'id')
+    }
+
+    //postId in arg
+    removePost(postId){
+        // const post = event.target.parentElement.parentElement;
+        // console.log(post, 'card');
+        // const dataPost = event.target.parentElement.parentElement.parentElement;
+        // remove(post.id).then((res) => {
+        //     if(res.status >= 200 && res.status <= 300){
+        //         event.target.removeEventListener('click',this.removePost);
+        //         dataPost.remove();
+
+        //     }
+        // })
+        // console.log((postId));
+
+        remove(postId).then((res) => {
             if(res.status >= 200 && res.status <= 300){
-                event.target.removeEventListener('click',this.removePost);
-                dataPost.remove();
+                // event.target.removeEventListener('click',this.removePost);
+                console.log(postId);
+                document.getElementById(postId).remove();
                 
             }
         })
     }
-    openEdit(e){
-        console.log(e.target.parentElement.parentElement);
-        const userid = e.target.parentElement.parentElement;
-
+    openEdit(postId){
+        // console.log(postId, 'id');
+        const userid = document.getElementById(postId);
+        // const userid = e.target.parentElement.parentElement;
+        // console.log(userid, 'userid');
         
-        const id = e.target.parentElement.parentElement.id;
-        const elem = e.target.parentElement.parentElement.parentElement;
+        const id = postId;
+        // const elem = e.target.parentElement.parentElement.parentElement;
+        const elem = document.querySelector('.card');
+        console.log(elem, 'elem id')
         const editBtn = document.querySelector('#editModal__button-submit');
-        editBtn.addEventListener('click',() => this.onEdit(e, id, elem));
+        editBtn.addEventListener('click',() => this.onEdit(id, elem));
         
     }
     
-    onEdit(e, id,elem){
+    onEdit( id,elem){
 
-        e.preventDefault();
+        // e.preventDefault();
         const formData = {};
         const form = document.forms[1];
         const userName = elem.querySelector('#username'),
@@ -155,6 +180,8 @@ class ModalService{
         this.addModal.classList.toggle('visually-hidden');
     }
     close(){
+        let myInput = document.querySelector('.form-control') 
+        myInput.value = "";
         this.addModal.classList.toggle('visually-hidden');
     }
     
