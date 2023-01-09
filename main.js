@@ -9,7 +9,6 @@ class PostService{
         this.openEdit = this.openEdit.bind(this);
         this.onEdit = this.onEdit.bind(this);
         this.lastId = this.lastId.bind(this);
-        // this.editModal = document.querySelector('#editModal');
         
     }
     addPost(name, title, body, id){
@@ -41,65 +40,36 @@ class PostService{
             </div>
           </div>
         </div>`;
-        // post.id = id;
-
-
         post.querySelector(".post").id = id;
         const buttonEdit = post.querySelector('#edit-button');
         const buttonDelete = post.querySelector('#delete-button');
-        //buttonEdit.addEventListener('click', this.openEdit);
         post.querySelector("#edit-button").addEventListener('click', () =>{this.openEdit(post.querySelector(".post").id)});
-        //  buttonDelete.addEventListener('click', this.removePost);
         post.querySelector("#delete-button").addEventListener('click', () =>{this.removePost(post.querySelector(".post").id)});
         return post;
     }
 
     lastId(event){
             LastSelectedId = event.target.id;
-            console.log(LastSelectedId, 'id')
     }
 
-    //postId in arg
     removePost(postId){
-        // const post = event.target.parentElement.parentElement;
-        // console.log(post, 'card');
-        // const dataPost = event.target.parentElement.parentElement.parentElement;
-        // remove(post.id).then((res) => {
-        //     if(res.status >= 200 && res.status <= 300){
-        //         event.target.removeEventListener('click',this.removePost);
-        //         dataPost.remove();
-
-        //     }
-        // })
-        // console.log((postId));
-
         remove(postId).then((res) => {
             if(res.status >= 200 && res.status <= 300){
-                // event.target.removeEventListener('click',this.removePost);
-                console.log(postId);
                 document.getElementById(postId).remove();
                 
             }
         })
     }
     openEdit(postId){
-        // console.log(postId, 'id');
         const userid = document.getElementById(postId);
-        // const userid = e.target.parentElement.parentElement;
-        // console.log(userid, 'userid');
-        
         const id = postId;
-        // const elem = e.target.parentElement.parentElement.parentElement;
         const elem = document.querySelector('.card');
-        console.log(elem, 'elem id')
         const editBtn = document.querySelector('#editModal__button-submit');
         editBtn.addEventListener('click',() => this.onEdit(id, elem));
         
     }
     
     onEdit( id,elem){
-
-        // e.preventDefault();
         const formData = {};
         const form = document.forms[1];
         const userName = elem.querySelector('#username'),
@@ -124,7 +94,6 @@ class PostService{
             body.innerText = `${data.body}`;
         }).then(getName(userid).then((name) => userName.textContent = `${name}`));
         form.reset();
-        // this.closeEdit();
     }
     validateForm(form, formData) {
         const errors = [];
@@ -137,7 +106,6 @@ class PostService{
 
         if (errors.length) {
                const errorEl = form.getElementsByClassName('error')[0];
-               console.log('hello world');
                errorEl.innerHTML = errors.map((er) => `<div>${er}</div>`).join('');
                return false;
           }
@@ -202,7 +170,6 @@ class ModalService{
             formData['userid'] = res;
             return formData;
         }).then((formData) => create(formData).then((data) => {
-            console.log(data, 'data');
             this.postService.addPost(data.userid, data.title, data.body, data.id);
         }));
         form.reset();
